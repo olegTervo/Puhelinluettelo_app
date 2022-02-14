@@ -3,7 +3,6 @@ require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
-const mongoose = require('mongoose')
 
 const Person = require('./models/person')
 
@@ -21,19 +20,15 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 app.use(cors())
 
 app.get('/api/persons', (req, res) => {
-  Person.find({})
-    .then(persons => {
-      res.json(persons)
-      mongoose.connection.close()
-    })
+  Person.find({}).then(persons => {
+    console.log(persons)
+    res.json(persons)
+  })
 })
 
 app.get('/api/persons/:id', (req, res) => {
   Person.findById(req.params.id)
-    .then(p => {
-      res.json(p)
-      mongoose.connection.close()
-    })
+    .then(p => res.json(p))
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -58,8 +53,6 @@ app.post('/api/persons', (request, response) => {
 
   person.save().then(savedPerson => {
     response.json(savedPerson)
-
-    mongoose.connection.close()
   })
 })
 

@@ -24,15 +24,3 @@ personSchema.set('toJSON', {
   })
 
 module.exports = mongoose.model('Person', personSchema)
-
-const CreatePerson = (name, number) => {
-    const person = new Person({
-        name: name,
-        number: Number(number)
-      })
-      
-    person.save().then(result => {
-        console.log('person saved!')
-        mongoose.connection.close()
-      })
-}
